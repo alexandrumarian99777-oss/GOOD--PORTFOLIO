@@ -177,13 +177,23 @@ I focus on writing efficient, maintainable code and delivering projects that not
       });
 
       const result = await res.json();
-      alert(result.success ? '✅ Message sent successfully!' : '❌ ' + result.error);
+
+      if (result.success) {
+        // redirect to success page
+        window.location.href = '/success.html';
+      } else {
+        // redirect to error page if back-end returns failure
+        window.location.href = '/error.html';
+      }
+
       form.reset();
     } catch (err) {
-      alert('❌ Failed to send message. Check your connection.');
+      // redirect to error page if fetch fails
+      window.location.href = '/error.html';
     }
   });
 </script>
+
 
 <script src="server.js"></script>
 </body>

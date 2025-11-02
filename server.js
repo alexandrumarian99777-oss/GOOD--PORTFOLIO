@@ -12,7 +12,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static("public"));
-app.get('/', (req, res) => {
+app.use(cors({
+  origin: '*'
+}));
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 // Connect to MongoDB using URI from .env
@@ -46,17 +49,16 @@ app.post("/send", async (req, res) => {
   }
 });
 
-app.get("/admin/messages", async (req, res) => {
-  const { secret } = req.query;
+app.get('/admin/messages', async (req, res) => {
+  const secret = req.query.secret || req.headers['x-admin-secret'];
   if (secret !== process.env.ADMIN_SECRET) {
-    return res.status(401).json({ success: false, error: "Unauthorized" });
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
   }
-
   try {
     const messages = await Message.find().sort({ createdAt: -1 });
     res.json({ success: true, messages });
   } catch (err) {
-    res.status(500).json({ success: false, error: "Failed to fetch messages" });
+    res.status(500).json({ success: false, error: 'Failed to fetch messages' });
   }
 });
 // login endpoint - checks secret and returns success

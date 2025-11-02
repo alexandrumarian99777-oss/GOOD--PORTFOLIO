@@ -44,4 +44,21 @@ app.post("/send", async (req, res) => {
   }
 });
 
+app.get("/admin/messages", async (req, res) => {
+  const { secret } = req.query;
+  if (secret !== process.env.ADMIN_SECRET) {
+    return res.status(401).json({ success: false, error: "Unauthorized" });
+  }
+
+  try {
+    const messages = await Message.find().sort({ createdAt: -1 });
+    res.json({ success: true, messages });
+  } catch (err) {
+    res.status(500).json({ success: false, error: "Failed to fetch messages" });
+  }
+});
+
+
+
+
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

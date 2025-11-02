@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Messages</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background-color: #f4f4f4; }
+    tbody tr:nth-child(even) { background-color: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>Admin - Messages</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody id="messages-body">
+      <!-- Messages will be inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+    async function loadMessages() {
+      const secret = "YourSuperSecret123"; // match ADMIN_SECRET
+      const res = await fetch(`https://good-portfolio.onrender.com/admin/messages?secret=${secret}`);
+      const data = await res.json();
+
+      if (!data.success) {
+        alert("Failed to load messages: " + data.error);
+        return;
+      }
+
+      const tbody = document.getElementById("messages-body");
+      tbody.innerHTML = "";
+
+      data.messages.forEach(msg => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${new Date(msg.createdAt).toLocaleString()}</td>
+          <td>${msg.name}</td>
+          <td>${msg.email}</td>
+          <td>${msg.message}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    loadMessages();
+  </script>
+</body>
+</html>

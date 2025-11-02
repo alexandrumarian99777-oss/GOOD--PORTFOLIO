@@ -53,6 +53,16 @@ app.post("/send", async (req, res) => {
     res.status(500).json({ success: false, error: "Failed to save message" });
   }
 });
+// Delete a message by ID (admin only)
+app.delete('/admin/messages/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Message.findByIdAndDelete(id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to delete message' });
+  }
+});
 
 // Admin login
 app.post('/admin/login', (req, res) => {

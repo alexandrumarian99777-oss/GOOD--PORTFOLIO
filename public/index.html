@@ -159,25 +159,32 @@ I focus on writing efficient, maintainable code and delivering projects that not
   
 <script>
   const form = document.getElementById('contact-form');
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const data = {
       name: form.name.value,
       email: form.email.value,
       message: form.message.value
     };
 
-    const res = await fetch('http://localhost:5000/send', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
-    });
+    try {
+      const res = await fetch('https://good-portfolio.onrender.com/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-    const result = await res.json();
-    alert(result.success ? '✅ Message sent successfully!' : '❌ ' + result.error);
-    form.reset();
+      const result = await res.json();
+      alert(result.success ? '✅ Message sent successfully!' : '❌ ' + result.error);
+      form.reset();
+    } catch (err) {
+      alert('❌ Failed to send message. Check your connection.');
+    }
   });
 </script>
+
 <script src="server.js"></script>
 </body>
 </html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Marian — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">MI</div>
+        <div>
+          <h1>Alexandru-Marian Ioan</h1>
+          <div class="muted" style="font-size:13px">Frontend Developer • Web & UX</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="intro">
+      <div>
+        <h2 id="intro">Clean, focused web projects — built to ship</h2>
+        <p class="lead">I’m a web developer passionate about creating clean, responsive websites and small, functional web applications. I specialize in HTML, CSS, and mobile-first design, ensuring that every project works seamlessly across devices. I also build small apps, like newsletter tools and contact forms, to add real-world functionality to websites.
+
+I focus on writing efficient, maintainable code and delivering projects that not only look great but also perform reliably.</p>
+        <a class="cta" href="#projects">See Projects</a>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="People collaborating in a meeting"/>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-title">
+        <h2 style="margin:0">Selected Projects</h2>
+        <div class="muted"></div>
+      </div>
+
+      <div class="projects">
+        <!-- Project 1 -->
+        <article class="card">
+          <img src="img/1.png" alt="Project screenshot - dashboard"/>
+          <div class="card-body">
+            <h3>Restaurant Landing Page</h3>
+            <p>A clean, responsive analytics dashboard with custom charts and mobile-friendly layout.</p>
+            <div class="meta">
+              <span class="tag">HTML • CSS</span>
+              <a class="view" href="#">Live →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="card">
+          <img src="img/2.png" alt="Project screenshot - marketing site"/>
+          <div class="card-body">
+            <h3>Blog</h3>
+            <p>Lead-focused landing page with A/B-ready sections and fast load times.</p>
+            <div class="meta">
+              <span class="tag">HTML • CSS</span>
+              <a class="view" href="#">Live →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="card">
+          <img src="img/3.png" alt="Project screenshot - app"/>
+          <div class="card-body">
+            <h3>Landing Page</h3>
+            <p>Prototype social feed with real-time updates and a modular component structure.</p>
+            <div class="meta">
+              <span class="tag">HTML • CSS</span>
+              <a class="view" target="_blank" href="https://loruky-website.netlify.app/" >LIve →</a>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <img src="img/4.png" alt="Project screenshot - app"/>
+          <div class="card-body">
+            <h3>Music Landing Page</h3>
+            <p>Prototype social feed with real-time updates and a modular component structure.</p>
+            <div class="meta">
+              <span class="tag">HTML • CSS</span>
+              <a class="view" href="#">Live →</a>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <img src="img/5.png" alt="Project screenshot - app"/>
+          <div class="card-body">
+            <h3>Starbucks Landing Page</h3>
+            <p>Prototype social feed with real-time updates and a modular component structure.</p>
+            <div class="meta">
+              <span class="tag">HTML • CSS</span>
+              <a class="view" href="#">Live →</a>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <img src="img/7.png" alt="Project screenshot - app"/>
+          <div class="card-body">
+            <h3>Social Feed App</h3>
+            <p>Prototype social feed with real-time updates and a modular component structure.</p>
+            <div class="meta">
+              <span class="tag">HTML • CSS</span>
+              <a class="view" href="#">Live →</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="split" id="about">
+      <div class="about">
+        <h3>About Me</h3>
+        <p class="muted">I help businesses grow online by building responsive websites and small web apps that look great and perform flawlessly. From newsletters to contact tools, I deliver functional, reliable projects that get results.</p>
+        <ul>
+          <li>Skills: HTML, CSS, JavaScript, Node.js, Express js and MongoDB</li>
+          <li>Location: Romania</li>
+          <li>Availability: Open to freelance & full-time</li>
+        </ul>
+      </div>
+
+      <aside class="contact-form" id="contact">
+        <h3>Contact</h3>
+       <form id="contact-form">
+  <div class="field">
+    <label for="name">Name</label>
+    <input id="name" name="name" placeholder="Your name" required />
+  </div>
+  <div class="field">
+    <label for="email">Email</label>
+    <input id="email" name="email" placeholder="Your email" required />
+  </div>
+  <div class="field">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" placeholder="Tell me about your project" required></textarea>
+  </div>
+  <button class="btn" type="submit">Send</button>
+</form>
+      </aside>
+    </section>
+
+    <footer>
+      Built with focus • Replace text & links with your own projects. © Marian Ioan
+    </footer>
+  </div>
+  
+<script>
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+      name: form.name.value,
+      email: form.email.value,
+      message: form.message.value
+    };
+
+    const res = await fetch('http://localhost:5000/send', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+    alert(result.success ? '✅ Message sent successfully!' : '❌ ' + result.error);
+    form.reset();
+  });
+</script>
+<script src="server.js"></script>
+</body>
+</html>

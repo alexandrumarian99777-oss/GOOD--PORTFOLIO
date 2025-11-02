@@ -22,7 +22,7 @@ app.use(express.static("public"));
 app.use(cors({
   origin: '*'
 }));
-app.get('/*', (req, res) => {
+app.get(/^(?!.*\.).*$/, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 // Connect to MongoDB using URI from .env

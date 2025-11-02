@@ -4,33 +4,33 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import session from 'express-session';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config(); // load .env variables
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Sessions
 app.use(session({
-  secret: process.env.SESSION_SECRET, // a random long string
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // true if using HTTPS
+  cookie: { secure: false }
 }));
-app.use(cors());
+
 app.use(bodyParser.json());
+app.use(cors());
 app.use(express.static("public"));
-app.use(cors({
-  origin: '*'
-}));
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-// Connect to MongoDB using URI from .env
-mongoose.connect(process.env.MONGO_URI, {
-  
-})
-.then(() => console.log("✅ MongoDB connected"))
-.catch(err => console.error("❌ MongoDB connection error:", err));
+
+// MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
 
 // Message schema
 const messageSchema = new mongoose.Schema({
@@ -44,9 +44,7 @@ const Message = mongoose.model("Message", messageSchema);
 // Routes
 app.post("/send", async (req, res) => {
   const { name, email, message } = req.body;
-  if (!name || !email || !message)
-    return res.status(400).json({ success: false, error: "All fields required" });
-
+  if (!name || !email || !message) return res.status(400).json({ success: false, error: "All fields required" });
   try {
     const msg = new Message({ name, email, message });
     await msg.save();
@@ -56,11 +54,23 @@ app.post("/send", async (req, res) => {
   }
 });
 
+// Admin login
+app.post('/admin/login', (req, res) => {
+  const { secret } = req.body;
+  if (secret === process.env.ADMIN_SECRET) {
+    req.session.admin = true;
+    return res.json({ success: true });
+  }
+  res.status(401).json({ success: false, error: 'Unauthorized' });
+});
+
+// Require admin middleware
 function requireAdmin(req, res, next) {
   if (req.session.admin) return next();
   res.status(401).json({ success: false, error: 'Unauthorized' });
 }
 
+// Admin messages
 app.get('/admin/messages', requireAdmin, async (req, res) => {
   try {
     const messages = await Message.find().sort({ createdAt: -1 });
@@ -70,33 +80,9 @@ app.get('/admin/messages', requireAdmin, async (req, res) => {
   }
 });
 
-// login endpoint - checks secret and returns success
-app.post('/admin/login', (req, res) => {
-  const { secret } = req.body;
-  if (secret === process.env.ADMIN_SECRET) {
-    req.session.admin = true; // mark session as authenticated
-    return res.json({ success: true });
-  }
-  res.status(401).json({ success: false, error: 'Unauthorized' });
+// SPA fallback
+app.get(/^(?!\/admin).*$/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
-
-// messages endpoint - accept secret either as query param or header
-app.get('/admin/messages', async (req, res) => {
-  const secret = req.query.secret || req.headers['x-admin-secret'];
-  if (secret !== process.env.ADMIN_SECRET) {
-    return res.status(401).json({ success: false, error: 'Unauthorized' });
-  }
-  try {
-    const messages = await Message.find().sort({ createdAt: -1 });
-    res.json({ success: true, messages });
-  } catch (err) {
-    res.status(500).json({ success: false, error: 'Failed to fetch messages' });
-  }
-});
-
-
-
-
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
